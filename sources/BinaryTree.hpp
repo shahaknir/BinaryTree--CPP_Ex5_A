@@ -10,7 +10,7 @@
 namespace ariel {
 
     template<typename T> class BinaryTree {
-        // using iterator = typename std::list<T>::iterator;
+       
         
         struct Node {
             T node;
@@ -40,7 +40,7 @@ namespace ariel {
 
         protected:
             Node* root;
-            std::map<T, Node*> vertex;
+            std::map<T, Node*> node_map;
             
         public:
             /**
