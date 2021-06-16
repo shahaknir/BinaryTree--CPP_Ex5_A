@@ -1,30 +1,30 @@
 //
-// Created by shahak on 09/06/2021.
+// Created by shahak on 10/06/2021.
 //
 
-#ifndef EX5_BINARYTREE_HPP
-#define EX5_BINARYTREE_HPP
 #include <iostream>
 #include <unordered_map>
 #include <vector>
 #include <stdexcept>
 
+#ifndef EX5_BINATYTREE_B_H
+#define EX5_BINATYTREE_B_H
+
 namespace ariel{
-    template <typename T> class BinaryTree {
+    template <typename T> class binatyTree_b {
         struct Node{
             T node_val;
             Node* parent, right_child, left_child;
             explicit Node(T node): node_val(node), parent(nullptr),
-                right_child(nullptr), left_child(nullptr){}
+                                   right_child(nullptr), left_child(nullptr){}
         };
-
-    protected:
-        int data{};
+    private:
+        int data;
         std::unordered_map<Node, Node*> tree_nodes;
-        Node _root;
+        Node* root;
 
         class iterator{
-        protected:
+        private:
             Node* _curr_node;
         public:
             iterator(){return _curr_node;}
@@ -33,35 +33,36 @@ namespace ariel{
             }
 
             bool operator==(const iterator other){
-
-                return false;
-
+                if(!this->_curr_node->node_val==other._curr_node->node_val||
+                   !this->_curr_node->parent==other._curr_node->parent||
+                   !this->_curr_node->left_child==other._curr_node->left_child||
+                   !this->_curr_node->right_child==other._curr_node->right_child)
+                    return false;
+                return true;
             }
             bool operator!=(const iterator other){
-
-                return false;
+                if(this->_curr_node->node_val==other._curr_node->node_val||
+                   this->_curr_node->parent==other._curr_node->parent||
+                   this->_curr_node->left_child==other._curr_node->left_child||
+                   this->_curr_node->right_child==other._curr_node->right_child)
+                    return false;
+                return true;
             }
 
 
 
         };
-
-
-
     public:
-        BinaryTree<T>()= default;
+        binaryTree<T>()= default;
 
         /**
          * Adding or changing _root value in our binary tree
          * @param root
          * @return our binaryTree
          */
-        BinaryTree<T> add_root(T root){
-            if(_root == nullptr)
-                this->_root = Node(root);
-            else{
-                this->_root->node_val = root;
-            }
+        binaryTree add_root(Node* root){
+            this->root = root;
+            tree_nodes.insert(root);
             return *this;
         }
 
@@ -71,11 +72,10 @@ namespace ariel{
          * @param right_child
          * @return pointer to our binary tree
          */
-        BinaryTree<T> add_right(T parent, T right_child){
+        binaryTree add_right(Node* parent, Node* right_child){
             if(!tree_nodes.at(parent)){
-                throw std::invalid_argument("Node requested to add to doesn't exist");
+                throw std::runtime_error("Node requested to add to doesn't exist");
             }
-
             parent->right_child = right_child;
             right_child->parent = parent;
             tree_nodes.template insert(right_child);
@@ -88,7 +88,7 @@ namespace ariel{
          * @param left_child
          * @return pointer to our binary tree
          */
-        BinaryTree add_left(Node* parent, Node* left_child){
+        binaryTree add_left(Node* parent, Node* left_child){
             if(!tree_nodes.at(parent)){
                 throw std::runtime_error("Node requested to add to doesn't exist");
             }
@@ -114,9 +114,9 @@ namespace ariel{
          */
         iterator inorder_begin(){
             if(this == nullptr)
-                iterator in = inorder_helper(this->_root);
+                iterator in = inorder_helper(this->root);
 
-            return this->_root;
+            return this->root;
         }
 
         /**
@@ -128,11 +128,12 @@ namespace ariel{
         }
 
 
-        friend std::ostream &operator<<(std::ostream &out, const BinaryTree<T> &BT){
+        friend std::ostream &operator<<(std::ostream &out, const binaryTree<T> &BT){
 
             return out;
         }
-    };
+
+
 }
 
-#endif //EX5_BINARYTREE_HPP
+#endif //EX5_BINATYTREE_B_H
